@@ -7,14 +7,14 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.static(__dirname + '/public'));
 
-let dict = {};
+var dict = {};
 
 app.post('/upload', (req, res) => {
-    console.log('Got body:', req.body.name);
     let name = req.body.name.trim()
+    console.log('Got body:', req.body.name + " at " + req.body.time);
 
     dict[name] = {
-        time: Date.now(),
+        time: req.body.time,
         img: req.body.img
     };
     res.sendStatus(200);
