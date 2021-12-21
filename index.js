@@ -10,8 +10,7 @@ const file = join(__dirname, 'db.json')
 const adapter = new JSONFile(file)
 const db = new Low(adapter)
 // await db.read()
-
-db.data ||= { user: [] }
+db.data = db.data || { posts: [] } 
 
 const app = express();
 
