@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.static(__dirname + '/public'));
 
 var dict = {};
-
+var dictx = []
 app.post('/upload', (req, res) => {
     let name = req.body.name.trim()
     console.log('Got body:', req.body.name + " at " + req.body.time);
@@ -17,11 +17,20 @@ app.post('/upload', (req, res) => {
         time: req.body.time,
         img: req.body.img
     };
+
+    dictx.push({
+        time: req.body.time,
+        img: req.body.img
+    })
+    console.log(Object.keys(dict));
     res.sendStatus(200);
 });
 
 app.get('/body', (req, res) => {
     res.send(JSON.stringify(dict));
+});
+app.get('/dicts', (req, res) => {
+    res.send(JSON.stringify(dictx));
 });
 app.get('/cache/:query', async (req, res) => {
     let name = req.params.query.trim()
