@@ -10,7 +10,7 @@ const file = join(__dirname, 'db.json')
 const adapter = new JSONFile(file)
 const db = new Low(adapter)
 // await db.read()
-db.data = db.data || { posts: [] } 
+db.data = db.data || { user: [] }
 
 const app = express();
 
@@ -81,13 +81,12 @@ app.get('/cache/:query', async (req, res) => {
     // else
     //     res.send("NOT FOUND")
 
-
-    const i =  await db.data.user.findIndex(u => u.name === name);
+    const i = db.data.user.findIndex(u => u.name === name);
     if (i === -1) {
         res.send("NOT FOUND.")
 
     } else {
-        res.send("<div>" + await db.data.user[i].img + "<p>Actualizado: " + await db.data.user[i].time + "</p></div>")
+        res.send("<div>" + db.data.user[i].img + "<p>Actualizado: " + db.data.user[i].time + "</p></div>")
         await db.write();
     }
 })
