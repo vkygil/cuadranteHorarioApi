@@ -82,12 +82,12 @@ app.get('/cache/:query', async (req, res) => {
     //     res.send("NOT FOUND")
 
 
-    const i = db.data.user.findIndex(u => u.name === name);
+    const i =  await db.data.user.findIndex(u => u.name === name);
     if (i === -1) {
         res.send("NOT FOUND.")
 
     } else {
-        res.send("<div>" + db.data.user[i].img + "<p>Actualizado: " + db.data.user[i].time + "</p></div>")
+        res.send("<div>" + await db.data.user[i].img + "<p>Actualizado: " + await db.data.user[i].time + "</p></div>")
         await db.write();
     }
 })
