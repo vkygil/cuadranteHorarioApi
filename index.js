@@ -60,10 +60,10 @@ app.get('/db/read', async (req, res) => {
     // let gg = await db.data.user
     // console.log(gg)
     // res.send((gg));
-
-    const i = db.data.user.findIndex(u => u.name === "THANA SINGH");
-    if (i === -1) res.send(db.data.user[i])
-    else res.send("no hay nada")
+    const filex = join(__dirname, 'db.json')
+    const adapterx = await new JSONFile(filex)
+    const dbx = await new Low(adapterx)
+    res.send(JSON.stringify(dbx.data))
 
     // await db.write();
 });
