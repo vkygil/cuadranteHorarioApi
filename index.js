@@ -37,7 +37,7 @@ app.post('/upload', async (req, res) => {
     let dir = __dirname + '/cache'
     fs.mkdir(dir, { recursive: true }, (err) => {
         if (err) throw err;
-        fs.writeFile(dir + "/" + req.body.name.replaceAll(" ", "").toLocaleLowerCase() + ".png", base64Data, 'base64', function (err) {
+        fs.writeFile(dir + "/" + req.body.name.replace(/ /g,"").toLocaleLowerCase() + ".png", base64Data, 'base64', function (err) {
             console.log(err);
         });
 
