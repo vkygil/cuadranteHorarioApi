@@ -71,9 +71,12 @@ app.get('/cache', (req, res) => {
     let dir = __dirname + '/cache'
 
     fs.readdir(dir, (err, files) => {
-        files.forEach(file => {
-            gg += "<p>" + file + "</p>"
-        });
+        if (files) {
+
+            files.forEach(file => {
+                gg += "<p>" + file + "</p>"
+            });
+        }
         res.send(gg);
 
     });
