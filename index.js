@@ -2,6 +2,7 @@ import express from 'express';
 import { join, dirname } from 'path'
 import { Low, JSONFile } from 'lowdb'
 import { fileURLToPath } from 'url'
+import * as fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -31,24 +32,52 @@ app.post('/upload', async (req, res) => {
 
     console.log(Object.keys(dict));
 
-    //start
-    let jayson = {
-        name: name,
-        time: req.body.time,
-        img: req.body.img
-    };
-    const i = db.data.user.findIndex(u => u.name === name);
-    console.log("i is :" + i);
-    if (i === -1) {
-        await db.data.user.push(jayson)
-    } else {
-        db.data.user[i] = jayson;
-    }
+    var base64Data = req.body.img.replace(/^data:image\/png;base64,/, "");
 
-    await db.write();
-    //end
+    let dir = __dirname + '/cache'
+    fs.mkdir(dir, { recursive: true }, (err) => {
+        if (err) throw err;
+    });
+
+
+    fs.writeFile(dir + "/" + req.body.name.replaceAll(" ", "").toLocaleLowerCase() + ".png", base64Data, 'base64', function (err) {
+        console.log(err);
+    });
+
+
+    // //start
+    // let jayson = {
+    //     name: name,
+    //     time: req.body.time,
+    //     img: req.body.img
+    // };
+    // const i = db.data.user.findIndex(u => u.name === name);
+    // console.log("i is :" + i);
+    // if (i === -1) {
+    //     await db.data.user.push(jayson)
+    // } else {
+    //     db.data.user[i] = jayson;
+    // }
+
+    // await db.write();
+    // //end
 
     res.sendStatus(200);
+});
+
+app.get('/cache', (req, res) => {
+    let gg = ""
+    let dir = __dirname + '/cache'
+
+    fs.readdir(dir, (err, files) => {
+        files.forEach(file => {
+            gg += "<p>" + file + "</p>"
+        });
+        res.send(gg);
+
+    });
+
+
 });
 
 app.get('/body', (req, res) => {
@@ -60,10 +89,10 @@ app.get('/db/read', async (req, res) => {
     // let gg = await db.data.user
     // console.log(gg)
     // res.send((gg));
-    const filex = join(__dirname, 'db.json')
-    const adapterx = await new JSONFile(filex)
-    const dbx = await new Low(adapterx)
-    res.send(JSON.stringify(dbx.data))
+
+    const i = db.data.user.findIndex(u => u.name === "THANA SINGH");
+    if (i === -1) res.send(db.data.user[i])
+    else res.send("no hay nada")
 
     // await db.write();
 });
@@ -81,12 +110,13 @@ app.get('/cache/:query', async (req, res) => {
     // else
     //     res.send("NOT FOUND")
 
+
     const i = db.data.user.findIndex(u => u.name === name);
     if (i === -1) {
         res.send("NOT FOUND.")
 
     } else {
-        res.send("<div>" + db.data.user[i].img + "<p>Actualizado: " + db.data.user[i].time + "</p></div>")
+        res.send("<div>" + await db.data.user[i].img + "<p>Actualizado: " + await db.data.user[i].time + "</p></div>")
         await db.write();
     }
 })
