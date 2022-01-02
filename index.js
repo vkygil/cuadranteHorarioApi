@@ -37,12 +37,13 @@ app.post('/upload', async (req, res) => {
     let dir = __dirname + '/cache'
     fs.mkdir(dir, { recursive: true }, (err) => {
         if (err) throw err;
+        fs.writeFile(dir + "/" + req.body.name.replaceAll(" ", "").toLocaleLowerCase() + ".png", base64Data, 'base64', function (err) {
+            console.log(err);
+        });
+
     });
 
 
-    fs.writeFile(dir + "/" + req.body.name.replaceAll(" ", "").toLocaleLowerCase() + ".png", base64Data, 'base64', function (err) {
-        console.log(err);
-    });
 
 
     // //start
@@ -66,7 +67,7 @@ app.post('/upload', async (req, res) => {
 });
 
 app.get('/cache', (req, res) => {
-    let gg = ""
+    let gg = ":"
     let dir = __dirname + '/cache'
 
     fs.readdir(dir, (err, files) => {
