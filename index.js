@@ -19,6 +19,7 @@ const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/cache'));
 
 var dict = {};
 app.post('/upload', async (req, res) => {
@@ -37,7 +38,7 @@ app.post('/upload', async (req, res) => {
     let dir = __dirname + '/cache'
     fs.mkdir(dir, { recursive: true }, (err) => {
         if (err) throw err;
-        fs.writeFile(dir + "/" + req.body.name.replace(/ /g,"").toLocaleLowerCase() + ".png", base64Data, 'base64', function (err) {
+        fs.writeFile(dir + "/" + req.body.name.replace(/ /g, "").toLocaleLowerCase() + ".png", base64Data, 'base64', function (err) {
             console.log(err);
         });
 

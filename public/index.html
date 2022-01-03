@@ -123,6 +123,22 @@
                 });
             });
         }
+        function searchIt() {
+            $(".imgContainer").empty();
+            $("#loading").toggle(true);
+            $("#loading").toggle(false);
+
+            let name = document.querySelector("#select-beast").value.replace(/ /g, "").toLocaleLowerCase()
+            $(".imgContainer").append('<img src="' + name + '.png" >');
+
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                document.querySelector("#imgContainer").scrollLeft = (2000 * 0.4)
+            } else {
+                document.querySelector("#imgContainer").style.height = (window.innerHeight - 98) + "px"
+                document.querySelector("#imgContainer").scrollLeft = (2000 * 0.3)
+                document.body.style.overflow = "hidden"
+            }
+        }
     </script>
 </body>
 
